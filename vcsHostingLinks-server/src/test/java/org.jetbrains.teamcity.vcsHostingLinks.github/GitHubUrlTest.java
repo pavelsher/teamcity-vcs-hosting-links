@@ -12,6 +12,13 @@ public class GitHubUrlTest {
     Assert.assertEquals(parsed.getRepositoryName(), "repo");
   }
 
+  public void test_parse_https_no_git_suffix() {
+    GitHubUrl parsed = GitHubUrl.parse("https://github.com/apache/commons-math");
+    Assert.assertNotNull(parsed);
+    Assert.assertEquals(parsed.getOwner(), "apache");
+    Assert.assertEquals(parsed.getRepositoryName(), "commons-math");
+  }
+
   public void test_parse_ssh() {
     GitHubUrl parsed = GitHubUrl.parse("git@github.com:JetBrains/teamcity-achievements.git");
     Assert.assertNotNull(parsed);

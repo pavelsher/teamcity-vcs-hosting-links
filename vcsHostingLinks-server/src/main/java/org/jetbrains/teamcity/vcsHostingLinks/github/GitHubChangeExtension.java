@@ -26,15 +26,18 @@ public class GitHubChangeExtension extends ChangeDetailsExtension {
 
   @Override
   public boolean isAvailable(@NotNull HttpServletRequest request) {
+    final boolean defaultAvailable = super.isAvailable(request);
+    if (!defaultAvailable) return false;
+
     SVcsModification mod = findVcsModification(request);
     if (mod != null) {
       VcsRootInstance vcsRoot = mod.getVcsRoot();
-      if (GIT_PLUGIN_NAME.equals(vcsRoot.getName())) {
-        String url = vcsRoot.getProperty(URL_PROP_NAME);
-        if (url == null || !url.contains(GITHUB_COM)) return false;
-      }
+      if (!GIT_PLUGIN_NAME.equals(vcsRoot.getVcsName())) return false;
+
+      String url = vcsRoot.getProperty(URL_PROP_NAME);
+      return url != null && url.contains(GITHUB_COM);
     }
-    return super.isAvailable(request);
+    return false;
   }
 
   @Override
@@ -49,6 +52,7 @@ public class GitHubChangeExtension extends ChangeDetailsExtension {
         if (parsed != null) {
           String commitUrl = "https://github.com/" + parsed.getOwner() + "/" + parsed.getRepositoryName() + "/commit/" + revision;
           model.put("commitUrl", commitUrl);
+          model.put("compactMode", !isChangePage(request));
         }
       }
     }
