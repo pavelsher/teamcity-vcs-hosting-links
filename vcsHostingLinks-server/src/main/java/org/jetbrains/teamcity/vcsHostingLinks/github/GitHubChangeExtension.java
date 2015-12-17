@@ -26,9 +26,6 @@ public class GitHubChangeExtension extends ChangeDetailsExtension {
 
   @Override
   public boolean isAvailable(@NotNull HttpServletRequest request) {
-    final boolean defaultAvailable = super.isAvailable(request);
-    if (!defaultAvailable) return false;
-
     SVcsModification mod = findVcsModification(request);
     if (mod != null) {
       VcsRootInstance vcsRoot = mod.getVcsRoot();
