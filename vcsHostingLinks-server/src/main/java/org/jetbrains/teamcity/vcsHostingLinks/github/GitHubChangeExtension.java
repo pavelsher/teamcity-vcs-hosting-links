@@ -21,7 +21,6 @@ public class GitHubChangeExtension extends ChangeDetailsExtension {
     setPlaceId(PlaceId.CHANGE_DETAILS_BLOCK);
     setPluginName("githubVcsHostingLinks");
     setIncludeUrl(pluginDescriptor.getPluginResourcesPath("/github/changeLink.jsp"));
-    addCssFile(pluginDescriptor.getPluginResourcesPath("/github/github.css"));
     register();
   }
 
