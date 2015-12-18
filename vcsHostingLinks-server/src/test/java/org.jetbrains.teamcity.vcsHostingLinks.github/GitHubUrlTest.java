@@ -25,4 +25,11 @@ public class GitHubUrlTest extends BaseTestCase {
     assertEquals("JetBrains", parsed.getOwner());
     assertEquals("teamcity-achievements", parsed.getRepositoryName());
   }
+
+  public void test_parse_ssh_prefix() {
+    GitHubUrl parsed = GitHubUrl.parse("ssh://git@github.com:JetBrains/teamcity-achievements.git");
+    assertNotNull(parsed);
+    assertEquals("JetBrains", parsed.getOwner());
+    assertEquals("teamcity-achievements", parsed.getRepositoryName());
+  }
 }

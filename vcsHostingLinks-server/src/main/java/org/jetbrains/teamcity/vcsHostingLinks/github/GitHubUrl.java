@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GitHubUrl {
-  private final static Pattern URL_PATTERN = Pattern.compile("(https://github\\.com/|git@github\\.com:)([^:/]+)/(.+)");
+  private final static Pattern URL_PATTERN = Pattern.compile("(https://github\\.com/|git@github\\.com:|ssh://git@github\\.com:)([^:/]+)/(.+)");
   private final String myOwner;
   private final String myRepositoryName;
 
