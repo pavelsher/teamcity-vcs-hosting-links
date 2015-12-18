@@ -1,28 +1,28 @@
 package org.jetbrains.teamcity.vcsHostingLinks.github;
 
-import org.testng.Assert;
+import jetbrains.buildServer.BaseTestCase;
 import org.testng.annotations.Test;
 
 @Test
-public class GitHubUrlTest {
+public class GitHubUrlTest extends BaseTestCase {
   public void test_parse_https() {
     GitHubUrl parsed = GitHubUrl.parse("https://github.com/owner/repo.git");
-    Assert.assertNotNull(parsed);
-    Assert.assertEquals(parsed.getOwner(), "owner");
-    Assert.assertEquals(parsed.getRepositoryName(), "repo");
+    assertNotNull(parsed);
+    assertEquals("owner", parsed.getOwner());
+    assertEquals("repo", parsed.getRepositoryName());
   }
 
   public void test_parse_https_no_git_suffix() {
     GitHubUrl parsed = GitHubUrl.parse("https://github.com/apache/commons-math");
-    Assert.assertNotNull(parsed);
-    Assert.assertEquals(parsed.getOwner(), "apache");
-    Assert.assertEquals(parsed.getRepositoryName(), "commons-math");
+    assertNotNull(parsed);
+    assertEquals("apache", parsed.getOwner());
+    assertEquals("commons-math", parsed.getRepositoryName());
   }
 
   public void test_parse_ssh() {
     GitHubUrl parsed = GitHubUrl.parse("git@github.com:JetBrains/teamcity-achievements.git");
-    Assert.assertNotNull(parsed);
-    Assert.assertEquals(parsed.getOwner(), "JetBrains");
-    Assert.assertEquals(parsed.getRepositoryName(), "teamcity-achievements");
+    assertNotNull(parsed);
+    assertEquals("JetBrains", parsed.getOwner());
+    assertEquals("teamcity-achievements", parsed.getRepositoryName());
   }
 }

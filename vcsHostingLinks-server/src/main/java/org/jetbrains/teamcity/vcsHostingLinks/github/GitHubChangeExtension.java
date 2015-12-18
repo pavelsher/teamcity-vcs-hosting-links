@@ -2,6 +2,7 @@ package org.jetbrains.teamcity.vcsHostingLinks.github;
 
 import jetbrains.buildServer.vcs.SVcsModification;
 import jetbrains.buildServer.vcs.VcsRootInstance;
+import jetbrains.buildServer.vcs.VcsRootNotFoundException;
 import jetbrains.buildServer.web.openapi.ChangeDetailsExtension;
 import jetbrains.buildServer.web.openapi.PagePlaces;
 import jetbrains.buildServer.web.openapi.PlaceId;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class GitHubChangeExtension extends ChangeDetailsExtension {
   private static final String GIT_PLUGIN_NAME = "jetbrains.git";
   private static final String URL_PROP_NAME = "url";
-  private static final String GITHUB_COM = "github.com";
+  private static final String GITHUB_COM = "/github.com/";
 
   public GitHubChangeExtension(@NotNull PagePlaces pagePlaces, @NotNull PluginDescriptor pluginDescriptor) {
     super(pagePlaces);
@@ -27,8 +28,14 @@ public class GitHubChangeExtension extends ChangeDetailsExtension {
   @Override
   public boolean isAvailable(@NotNull HttpServletRequest request) {
     SVcsModification mod = findVcsModification(request);
-    if (mod != null) {
-      VcsRootInstance vcsRoot = mod.getVcsRoot();
+    if (mod != null && !mod.isPersonal()) {
+      VcsRootInstance vcsRoot;
+      try {
+        vcsRoot = mod.getVcsRoot();
+      } catch (VcsRootNotFoundException e) {
+        return false;
+      }
+
       if (!GIT_PLUGIN_NAME.equals(vcsRoot.getVcsName())) return false;
 
       String url = vcsRoot.getProperty(URL_PROP_NAME);
